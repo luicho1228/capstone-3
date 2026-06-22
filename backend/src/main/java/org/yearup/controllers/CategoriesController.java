@@ -1,6 +1,7 @@
 package org.yearup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -66,7 +67,7 @@ public class CategoriesController
     public ResponseEntity<Category> addCategory(@RequestBody Category category)
     {
         // insert the category and return it with status 201 Created
-        return ResponseEntity.ok(categoryService.create(category));
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.create(category));
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
