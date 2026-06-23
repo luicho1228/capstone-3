@@ -1,12 +1,15 @@
 package org.yearup.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.CartItem;
 import org.yearup.models.Product;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.ShoppingCartItem;
 import org.yearup.repository.ShoppingCartRepository;
 
+import java.lang.module.ResolutionException;
 import java.util.List;
 
 @Service
@@ -43,4 +46,30 @@ public class ShoppingCartService
     }
 
     // add additional methods here
+
+    public ShoppingCart addProduct(int userId, int productId)
+    {
+        Product product = productService.getById(productId);
+        if (product == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+        }
+        List<CartItem> cartItems = shoppingCartRepository.findByUserId(userId);
+
+        for (CartItem cartItem: cartItems){
+            if (cartItem.getProductId() == productId){
+                cartItem.setQuantity(cartItem.getQuantity()+1);
+                shoppingCartRepository.save(cartItem);
+                return getByUserId(userId);
+            }
+        }
+
+        CartItem newCartItem = new CartItem();
+        newCartItem.setUserId(userId);
+        newCartItem.setProductId(productId);
+        newCartItem.setQuantity(1);
+
+        shoppingCartRepository.save(newCartItem);
+
+        return getByUserId(userId);
+    }
 }
