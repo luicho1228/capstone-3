@@ -38,9 +38,10 @@ public class CategoryService
     {
         // update category and return the updated category
         Category current = categoryRepository.findById(categoryId).orElse(null);
+        current.setCategoryId(categoryId);
         current.setName(category.getName());
         current.setDescription(category.getDescription());
-        current.setCategoryId(category.getCategoryId());
+
         return categoryRepository.save(current);
     }
 
