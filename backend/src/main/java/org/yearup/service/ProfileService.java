@@ -2,12 +2,16 @@ package org.yearup.service;
 
 import org.springframework.stereotype.Service;
 import org.yearup.models.Profile;
+import org.yearup.models.User;
 import org.yearup.repository.ProfileRepository;
+
+import java.util.List;
 
 @Service
 public class ProfileService
 {
     private final ProfileRepository profileRepository;
+
 
     public ProfileService(ProfileRepository profileRepository)
     {
@@ -17,5 +21,9 @@ public class ProfileService
     public Profile create(Profile profile)
     {
         return profileRepository.save(profile);
+    }
+
+    public Profile getProfile(int userId){
+        return profileRepository.findById(userId).orElse(null);
     }
 }

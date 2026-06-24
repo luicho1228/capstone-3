@@ -15,12 +15,13 @@ import java.util.List;
 // only logged in users should have access to these actions
 @RestController
 @RequestMapping("/cart")
+@PreAuthorize("hasRole('ROLE_USER')")
 @CrossOrigin
 public class ShoppingCartController
 {
     // a shopping cart controller depends on the service layer
-    private ShoppingCartService shoppingCartService;
-    private UserService userService;
+    private final ShoppingCartService shoppingCartService;
+    private final UserService userService;
 
 
     public ShoppingCartController(ShoppingCartService shoppingCartService, UserService userService) {
@@ -38,7 +39,6 @@ public class ShoppingCartController
 
     // each method in this controller requires a Principal object as a parameter
     @GetMapping()
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ShoppingCart getCart(Principal principal)
     {
         // get the currently logged in username
@@ -57,7 +57,6 @@ public class ShoppingCartController
     // return the updated cart with status 201 Created
 
     @PostMapping("/products/{productId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<ShoppingCart> addProductToCart(@PathVariable int productId, Principal principal){
 
         String username = principal.getName();
@@ -75,7 +74,6 @@ public class ShoppingCartController
 
 
     @PutMapping("/products/{productId}")
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<ShoppingCart> updateProduct(@PathVariable int productId, @RequestBody CartItem cartItem, Principal principal){
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
@@ -87,7 +85,6 @@ public class ShoppingCartController
     // https://localhost:8080/cart  - return the (now empty) cart so the front end can refresh it (200 OK)
 
     @DeleteMapping()
-    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<ShoppingCart> clearCart(Principal principal){
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
