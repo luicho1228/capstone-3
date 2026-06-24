@@ -91,8 +91,8 @@ public class ShoppingCartController
     public ResponseEntity<ShoppingCart> clearCart(Principal principal){
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
-        shoppingCartService.deleteAllProducts(userId);
-        return ResponseEntity.ok().build();
+        ShoppingCart shoppingCart = shoppingCartService.deleteAllProducts(userId);
+        return ResponseEntity.ok(shoppingCart);
     }
 
 }
