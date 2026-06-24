@@ -72,4 +72,9 @@ public class ShoppingCartService
 
         return getByUserId(userId);
     }
+
+    public void deleteAllProducts(int userId){
+        shoppingCartRepository.deleteByUserId(userId);
+    }
+
 }
