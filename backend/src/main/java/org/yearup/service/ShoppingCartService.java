@@ -49,23 +49,17 @@ public class ShoppingCartService
         if (product == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
         }
-        List<CartItem> cartItems = shoppingCartRepository.findByUserId(userId);
-
-        for (CartItem cartItem: cartItems){
-            if (cartItem.getProductId() == productId){
-                cartItem.setQuantity(cartItem.getQuantity()+1);
-                shoppingCartRepository.save(cartItem);
-                return getByUserId(userId);
-            }
+        CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId,productId);
+        if (cartItem == null){
+            CartItem newCartItem = new CartItem();
+            newCartItem.setUserId(userId);
+            newCartItem.setProductId(productId);
+            newCartItem.setQuantity(1);
+            shoppingCartRepository.save(newCartItem);
+        }else{
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+            shoppingCartRepository.save(cartItem);
         }
-
-        CartItem newCartItem = new CartItem();
-        newCartItem.setUserId(userId);
-        newCartItem.setProductId(productId);
-        newCartItem.setQuantity(1);
-
-        shoppingCartRepository.save(newCartItem);
-
         return getByUserId(userId);
     }
 
