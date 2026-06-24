@@ -40,7 +40,7 @@ public class ShoppingCartController
 
     // each method in this controller requires a Principal object as a parameter
     @GetMapping()
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ShoppingCart getCart(Principal principal)
     {
         // get the currently logged in username
