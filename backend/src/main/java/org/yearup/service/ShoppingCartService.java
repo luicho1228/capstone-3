@@ -1,5 +1,6 @@
 package org.yearup.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,19 +31,14 @@ public class ShoppingCartService
         // load the user's cart rows, look up each product, and build the ShoppingCart
         ShoppingCart cart = new ShoppingCart();
         List<CartItem> cartItems = shoppingCartRepository.findByUserId(userId);
-
         for (CartItem cartItem : cartItems){
             Product product = productService.getById(cartItem.getProductId());
             ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
             shoppingCartItem.setProduct(product);
             shoppingCartItem.setQuantity(cartItem.getQuantity());
-
-            cart.getItems().put(product.getProductId(), shoppingCartItem);
-
-
+            cart.add(shoppingCartItem);
         }
         return cart;
-
     }
 
     // add additional methods here
@@ -73,6 +69,20 @@ public class ShoppingCartService
         return getByUserId(userId);
     }
 
+
+    public ShoppingCartItem updateShoppingCart(int userId, int productId, int quantity){
+        CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId,productId);
+        cartItem.setQuantity(quantity);
+        cartItem.setProductId(productId);
+        cartItem.setUserId(userId);
+        Product product = productService.getById(cartItem.getProductId());
+        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
+        shoppingCartItem.setProduct(product);
+        shoppingCartRepository.save(cartItem);
+        return shoppingCartItem;
+    }
+
+    @Transactional
     public void deleteAllProducts(int userId){
         shoppingCartRepository.deleteByUserId(userId);
     }
