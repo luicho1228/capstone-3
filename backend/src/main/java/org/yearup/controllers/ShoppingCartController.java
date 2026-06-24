@@ -4,10 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.yearup.models.Product;
-import org.yearup.models.ShoppingCart;
-import org.yearup.models.ShoppingCartItem;
-import org.yearup.models.User;
+import org.yearup.models.*;
 import org.yearup.service.ShoppingCartService;
 import org.yearup.service.UserService;
 
@@ -78,11 +75,11 @@ public class ShoppingCartController
 
 
     @PutMapping("/products/{productId}")
-    public ResponseEntity<ShoppingCartItem> updateProduct(@PathVariable int productId,@RequestBody int quantity,Principal principal){
+    @PreAuthorize("hasRole('ROLE_USER')")
+    public ResponseEntity<ShoppingCart> updateProduct(@PathVariable int productId, @RequestBody CartItem cartItem, Principal principal){
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
-        ShoppingCartItem updatedShoppingCartItem = shoppingCartService.updateShoppingCart(userId,productId, quantity);
-        return ResponseEntity.ok().body(updatedShoppingCartItem);
+        return ResponseEntity.ok().body(shoppingCartService.updateShoppingCart(userId,productId, cartItem));
     }
 
 

@@ -70,16 +70,15 @@ public class ShoppingCartService
     }
 
 
-    public ShoppingCartItem updateShoppingCart(int userId, int productId, int quantity){
-        CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId,productId);
-        cartItem.setQuantity(quantity);
-        cartItem.setProductId(productId);
-        cartItem.setUserId(userId);
-        Product product = productService.getById(cartItem.getProductId());
-        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-        shoppingCartItem.setProduct(product);
-        shoppingCartRepository.save(cartItem);
-        return shoppingCartItem;
+    public ShoppingCart updateShoppingCart(int userId, int productId, CartItem cartItem){
+        CartItem updatedCartItem = shoppingCartRepository.findByUserIdAndProductId(userId,productId);
+        if (updatedCartItem == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
+        }
+        updatedCartItem.setQuantity(cartItem.getQuantity());
+        shoppingCartRepository.save(updatedCartItem);
+
+        return getByUserId(userId);
     }
 
     @Transactional
