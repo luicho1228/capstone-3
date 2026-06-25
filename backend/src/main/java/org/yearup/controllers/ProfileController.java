@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.Profile;
 import org.yearup.models.User;
@@ -42,4 +39,19 @@ public class ProfileController {
         }
         return ResponseEntity.ok().body(profile);
     }
+
+
+    @PutMapping()
+    public ResponseEntity<Profile> updateProfile(Principal principal,@RequestBody Profile profile){
+
+        String username = principal.getName();
+        int userId = userService.getIdByUsername(username);
+        Profile updatedProfile = profileService.updateProfile(userId,profile);
+        if (updatedProfile == null){
+            throw  new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(updatedProfile);
+
+    }
+
 }
