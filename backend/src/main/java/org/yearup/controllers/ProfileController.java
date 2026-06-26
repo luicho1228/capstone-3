@@ -31,7 +31,7 @@ public class ProfileController {
         int userId = userService.getIdByUsername(username);
         Profile profile = profileService.getProfile(userId);
         if (profile == null) {
-            ResponseEntity.notFound().build();
+           return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(profile);
     }
@@ -44,7 +44,7 @@ public class ProfileController {
         int userId = userService.getIdByUsername(username);
         Profile updatedProfile = profileService.updateProfile(userId, profile);
         if (updatedProfile == null) {
-            ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updatedProfile);
 
