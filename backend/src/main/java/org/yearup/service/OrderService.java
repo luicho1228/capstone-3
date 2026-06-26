@@ -9,6 +9,8 @@ import org.yearup.models.Profile;
 import org.yearup.models.ShoppingCart;
 import org.yearup.repository.OrderRepository;
 
+import java.time.LocalDate;
+
 @Service
 public class OrderService {
 
@@ -38,6 +40,7 @@ public class OrderService {
         order.setCity(profile.getCity());
         order.setState(profile.getState());
         order.setZip(profile.getZip());
+        order.setDate(LocalDate.now());
         double totalAmount = shoppingCart.getTotal();
         order.setShippingAmount(totalAmount);
         orderRepository.save(order);

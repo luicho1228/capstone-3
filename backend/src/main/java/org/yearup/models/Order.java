@@ -1,6 +1,8 @@
 package org.yearup.models;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -14,7 +16,7 @@ public class Order {
     @Column(name = "user_id")
     private int userId;
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
     @Column(name = "address")
     private String address;
     @Column(name = "city")
@@ -41,11 +43,11 @@ public class Order {
         this.userId = userId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

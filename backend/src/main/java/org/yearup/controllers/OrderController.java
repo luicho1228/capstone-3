@@ -1,5 +1,7 @@
 package org.yearup.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,6 +23,12 @@ public class OrderController {
     private UserService userService;
     private OrderService orderService;
 
+    @Autowired
+    public OrderController(UserService userService, OrderService orderService) {
+        this.userService = userService;
+        this.orderService = orderService;
+    }
+
     @PostMapping()
     public ResponseEntity<ShoppingCart> createOrder(Principal principal){
 
@@ -30,7 +38,7 @@ public class OrderController {
         if (shoppingCart == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(shoppingCart);
+        return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCart);
     }
 
 
