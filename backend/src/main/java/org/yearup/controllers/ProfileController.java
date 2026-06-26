@@ -1,14 +1,10 @@
 package org.yearup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.Profile;
-import org.yearup.models.User;
 import org.yearup.service.ProfileService;
 import org.yearup.service.UserService;
 
@@ -30,25 +26,25 @@ public class ProfileController {
 
 
     @GetMapping()
-    public ResponseEntity<Profile> getProfile(Principal principal){
+    public ResponseEntity<Profile> getProfile(Principal principal) {
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
         Profile profile = profileService.getProfile(userId);
-        if (profile == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (profile == null) {
+            ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(profile);
     }
 
 
     @PutMapping()
-    public ResponseEntity<Profile> updateProfile(Principal principal,@RequestBody Profile profile){
+    public ResponseEntity<Profile> updateProfile(Principal principal, @RequestBody Profile profile) {
 
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
-        Profile updatedProfile = profileService.updateProfile(userId,profile);
-        if (updatedProfile == null){
-            throw  new ResponseStatusException(HttpStatus.NOT_FOUND);
+        Profile updatedProfile = profileService.updateProfile(userId, profile);
+        if (updatedProfile == null) {
+            ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updatedProfile);
 
