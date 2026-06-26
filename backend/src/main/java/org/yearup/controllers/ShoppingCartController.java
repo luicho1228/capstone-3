@@ -11,8 +11,6 @@ import org.yearup.service.UserService;
 import java.security.Principal;
 import java.util.List;
 
-// convert this class to a REST controller
-// only logged in users should have access to these actions
 @RestController
 @RequestMapping("/cart")
 @PreAuthorize("hasRole('ROLE_USER')")
