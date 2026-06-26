@@ -29,14 +29,6 @@ public class ShoppingCartController
         this.userService = userService;
     }
 
-
-    //todo remove this method later
-    @GetMapping("/users")
-    public List<User> getAllUsers(){
-        return userService.getAll();
-    }
-
-
     // each method in this controller requires a Principal object as a parameter
     @GetMapping()
     public ShoppingCart getCart(Principal principal)
@@ -58,13 +50,14 @@ public class ShoppingCartController
 
     @PostMapping("/products/{productId}")
     public ResponseEntity<ShoppingCart> addProductToCart(@PathVariable int productId, Principal principal){
-
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
 
-        ShoppingCart updatedCart = shoppingCartService.addProduct(userId,productId);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(updatedCart);
+        ShoppingCart addedCart = shoppingCartService.addProduct(userId,productId);
+        if (addedCart == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(addedCart);
     }
 
 
@@ -77,7 +70,11 @@ public class ShoppingCartController
     public ResponseEntity<ShoppingCart> updateProduct(@PathVariable int productId, @RequestBody CartItem cartItem, Principal principal){
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
-        return ResponseEntity.ok().body(shoppingCartService.updateShoppingCart(userId,productId, cartItem));
+        ShoppingCart shoppingCart = shoppingCartService.updateShoppingCart(userId,productId, cartItem);
+        if (shoppingCart == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(shoppingCart);
     }
 
 

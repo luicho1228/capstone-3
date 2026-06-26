@@ -2,6 +2,7 @@ package org.yearup.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.CartItem;
@@ -28,7 +29,6 @@ public class ShoppingCartService
 
     public ShoppingCart getByUserId(int userId)
     {
-        // load the user's cart rows, look up each product, and build the ShoppingCart
         ShoppingCart cart = new ShoppingCart();
         List<CartItem> cartItems = shoppingCartRepository.findByUserId(userId);
         for (CartItem cartItem : cartItems){
@@ -41,13 +41,11 @@ public class ShoppingCartService
         return cart;
     }
 
-    // add additional methods here
-
     public ShoppingCart addProduct(int userId, int productId)
     {
         Product product = productService.getById(productId);
         if (product == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+            return null;
         }
         CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId,productId);
         if (cartItem == null){
@@ -66,12 +64,8 @@ public class ShoppingCartService
 
     public ShoppingCart updateShoppingCart(int userId, int productId, CartItem cartItem){
         CartItem updatedCartItem = shoppingCartRepository.findByUserIdAndProductId(userId,productId);
-        if (updatedCartItem == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
-        }
         updatedCartItem.setQuantity(cartItem.getQuantity());
         shoppingCartRepository.save(updatedCartItem);
-
         return getByUserId(userId);
     }
 
