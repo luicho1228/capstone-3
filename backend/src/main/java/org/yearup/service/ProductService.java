@@ -29,10 +29,20 @@ public class ProductService {
 
     }
 
+    /**
+     * Get a List of products in the catalog based on their category
+     * @param categoryId
+     * @return
+     */
     public List<Product> listByCategoryId(int categoryId) {
         return productRepository.findByCategoryId(categoryId);
     }
 
+    /**
+     * Get a product from the catalog based on their productId
+     * @param productId
+     * @return
+     */
     public Product getById(int productId) {
         return productRepository.findById(productId).orElse(null);
     }

@@ -20,6 +20,11 @@ public class ShoppingCartService {
         this.productService = productService;
     }
 
+    /**
+     * Get the current shopping cart object saved in the database
+     * @param userId
+     * @return
+     */
     public ShoppingCart getByUserId(int userId) {
         ShoppingCart cart = new ShoppingCart();
         List<CartItem> cartItems = shoppingCartRepository.findByUserId(userId);
@@ -52,6 +57,13 @@ public class ShoppingCartService {
         return getByUserId(userId);
     }
 
+    /**
+     * updates a specific item quantity in the cart
+     * @param userId
+     * @param productId
+     * @param shoppingCartItem
+     * @return
+     */
     public ShoppingCart updateShoppingCart(int userId, int productId, ShoppingCartItem shoppingCartItem) {
         CartItem updatedCartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
         if (updatedCartItem == null) {
