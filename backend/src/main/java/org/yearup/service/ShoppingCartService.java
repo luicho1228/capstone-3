@@ -59,6 +59,9 @@ public class ShoppingCartService {
 
     public ShoppingCart updateShoppingCart(int userId, int productId, ShoppingCartItem shoppingCartItem) {
         CartItem updatedCartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
+        if (updatedCartItem == null) {
+            return null;
+        }
         updatedCartItem.setQuantity(shoppingCartItem.getQuantity());
         shoppingCartRepository.save(updatedCartItem);
         return getByUserId(userId);
