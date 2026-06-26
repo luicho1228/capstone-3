@@ -1,17 +1,13 @@
 package org.yearup.service;
 
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.CartItem;
 import org.yearup.models.Product;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.ShoppingCartItem;
 import org.yearup.repository.ShoppingCartRepository;
 
-import java.lang.module.ResolutionException;
 import java.util.List;
 
 @Service
@@ -55,7 +51,6 @@ public class ShoppingCartService {
         }
         return getByUserId(userId);
     }
-
 
     public ShoppingCart updateShoppingCart(int userId, int productId, ShoppingCartItem shoppingCartItem) {
         CartItem updatedCartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);

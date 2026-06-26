@@ -4,12 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.yearup.models.*;
+import org.yearup.models.ShoppingCart;
+import org.yearup.models.ShoppingCartItem;
+import org.yearup.models.User;
 import org.yearup.service.ShoppingCartService;
 import org.yearup.service.UserService;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
