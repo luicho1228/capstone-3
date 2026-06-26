@@ -25,7 +25,6 @@ public class OrderController {
 
     @PostMapping()
     public ResponseEntity<ShoppingCart> createOrder(Principal principal){
-
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
         ShoppingCart shoppingCart = orderService.createOrder(userId);
