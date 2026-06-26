@@ -1,7 +1,5 @@
 package org.yearup.controllers;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,7 +13,7 @@ import org.yearup.service.UserService;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/Order")
+@RequestMapping("/orders")
 @CrossOrigin
 @PreAuthorize("hasRole('ROLE_USER')")
 public class OrderController {
