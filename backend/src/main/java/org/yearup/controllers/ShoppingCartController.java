@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.ShoppingCartItem;
 import org.yearup.models.User;
@@ -30,7 +31,11 @@ public class ShoppingCartController {
         String userName = principal.getName();
         User user = userService.getByUserName(userName);
         int userId = user.getId();
-        return shoppingCartService.getByUserId(userId);
+        ShoppingCart shoppingCart = shoppingCartService.getByUserId(userId);
+        if (shoppingCart == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Cart doesn't exist");
+        }
+        return shoppingCart;
     }
 
     @PostMapping("/products/{productId}")
