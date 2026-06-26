@@ -15,8 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @CrossOrigin
-public class CategoriesController
-{
+public class CategoriesController {
     private final CategoryService categoryService;
     private final ProductService productService;
 
@@ -27,40 +26,35 @@ public class CategoriesController
     }
 
     @GetMapping()
-    public List<Category> getAll()
-    {
+    public List<Category> getAll() {
         return categoryService.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getById(@PathVariable int id)
-    {
-        Category category =  categoryService.getById(id);
-        if (category == null){
+    public ResponseEntity<Category> getById(@PathVariable int id) {
+        Category category = categoryService.getById(id);
+        if (category == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(category) ;
+        return ResponseEntity.ok(category);
     }
 
     @GetMapping("{categoryId}/products")
-    public List<Product> getProductsById(@PathVariable int categoryId)
-    {
+    public List<Product> getProductsById(@PathVariable int categoryId) {
         return productService.listByCategoryId(categoryId);
     }
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Category> addCategory(@RequestBody Category category)
-    {
+    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.create(category));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Category> updateCategory(@PathVariable int id, @RequestBody Category category)
-    {
-        Category updatedCategory = categoryService.update(id,category);
-        if (updatedCategory == null){
+    public ResponseEntity<Category> updateCategory(@PathVariable int id, @RequestBody Category category) {
+        Category updatedCategory = categoryService.update(id, category);
+        if (updatedCategory == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(updatedCategory);
@@ -68,8 +62,7 @@ public class CategoriesController
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteCategory(@PathVariable int id)
-    {
+    public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
         categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }
