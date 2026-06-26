@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.yearup.models.Order;
 import org.yearup.models.ShoppingCart;
 import org.yearup.service.OrderService;
 import org.yearup.service.UserService;
@@ -20,8 +21,8 @@ import java.security.Principal;
 @PreAuthorize("hasRole('ROLE_USER')")
 public class OrderController {
 
-    private UserService userService;
-    private OrderService orderService;
+    private final UserService userService;
+    private final OrderService orderService;
 
     @Autowired
     public OrderController(UserService userService, OrderService orderService) {
@@ -30,15 +31,20 @@ public class OrderController {
     }
 
     @PostMapping()
-    public ResponseEntity<ShoppingCart> createOrder(Principal principal){
+    public ResponseEntity<Order> createOrder(Principal principal){
 
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
-        ShoppingCart shoppingCart = orderService.createOrder(userId);
+        /*ShoppingCart shoppingCart = orderService.createOrder(userId);
         if (shoppingCart == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCart);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCart);*/
+        Order order = orderService.createOrder(userId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+
     }
 
 
