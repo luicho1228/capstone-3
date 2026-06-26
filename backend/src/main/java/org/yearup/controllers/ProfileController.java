@@ -24,18 +24,16 @@ public class ProfileController {
         this.userService = userService;
     }
 
-
     @GetMapping()
     public ResponseEntity<Profile> getProfile(Principal principal) {
         String username = principal.getName();
         int userId = userService.getIdByUsername(username);
         Profile profile = profileService.getProfile(userId);
         if (profile == null) {
-           return ResponseEntity.notFound().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(profile);
     }
-
 
     @PutMapping()
     public ResponseEntity<Profile> updateProfile(Principal principal, @RequestBody Profile profile) {

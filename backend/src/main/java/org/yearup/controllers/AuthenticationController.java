@@ -60,7 +60,6 @@ public class AuthenticationController {
         }
         catch (AuthenticationException e)
         {
-            // bad username/password -> 401 (not a 500)
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
         }
     }
@@ -72,14 +71,11 @@ public class AuthenticationController {
         boolean exists = userService.exists(newUser.getUsername());
         if (exists)
         {
-            // duplicate username -> 400 (not a 500)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Already Exists.");
         }
 
-        // create user
         User user = userService.create(new User(0, newUser.getUsername(), newUser.getPassword(), newUser.getRole()));
 
-        // create profile
         Profile profile = new Profile();
         profile.setUserId(user.getId());
         profileService.create(profile);
